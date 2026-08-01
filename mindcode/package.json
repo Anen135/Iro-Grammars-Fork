@@ -1,8 +1,31 @@
 {
   "name": "mindcode",
-  "displayName": "mindcode",
-  "description": "Mindcode Syntax for the Mindustry Game Language Compiler",
-  "version": "0.0.2",
+  "displayName": "Mindcode",
+  "description": "Mindcode language support for the Mindustry game — syntax highlighting, themes, and language configuration.",
+  "version": "0.1.0",
+  "publisher": "jig-opensource",
+  "author": {
+    "name": "JIG Open Source",
+    "url": "https://gitlab.com/jig-opensource"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/jig-opensource/source-code/Iro-Grammars.git"
+  },
+  "homepage": "https://gitlab.com/jig-opensource/source-code/Iro-Grammars",
+  "bugs": {
+    "url": "https://gitlab.com/jig-opensource/source-code/Iro-Grammars/-/issues"
+  },
+  "keywords": [
+    "mindcode",
+    "mindustry",
+    "mlog",
+    "language",
+    "syntax",
+    "highlighting",
+    "theme"
+  ],
   "engines": {
     "vscode": "^1.54.0"
   },
@@ -15,7 +38,7 @@
       {
         "id": "mindcode",
         "aliases": [
-          "mindcode",
+          "Mindcode",
           "mindcode"
         ],
         "extensions": [
@@ -36,10 +59,9 @@
       {
         "id": "Default Dark+ Mindcode",
         "label": "%darkPlusMindcodeColorThemeLabel%",
-        "uiTheme": "vs-dark-mindcode",
+        "uiTheme": "vs-dark",
         "path": "./themes/dark_plus_mindcode.json"
       }
     ]
   }
 }
-

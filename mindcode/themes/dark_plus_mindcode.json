@@ -4,27 +4,32 @@
 // comment.line.double-slash
 // constant.language
 // constant.numeric
+// constant.numeric.color
 // constant.other
 // entity.name.function
 // entity.inherited-class
 // entity.name
 // entity.name.section
 // entity.name.type
-// Name.Variable.Global
+// variable.global
 // invalid.illegal
 // keyword
 // keyword.control
 // keyword.operator
 // keyword.operator.arithmetic
 // keyword.operator.assignment
+// keyword.operator.assignment.compound
+// keyword.operator.comparison
 // keyword.operator.logical
 // keyword.other
-// keyword punctuation
+// keyword.other.mlog
 // punctuation
+// punctuation.definition
 // variable.other.member
 // storage.modifier
 // storage.type
 // string.quoted.double
+// string.quoted.double.formattable
 // string.quoted.single
 // string.quoted.triple
 // support.type
@@ -135,12 +140,12 @@
 			"scope": [
 				// tomtom
 				"constant.language.mindcode",
-				"Name.Variable.Global",
+				"variable.global.mindcode",
 				"variable.other.constant",
 				"variable.other.enummember"
 			],
 			"settings": {
-				"foreground": "#4FC1FF",
+				"foreground": "#4FC1FF"
 			}
 		},
 		{
@@ -150,7 +155,61 @@
 				"keyword.operator.logical.mindcode"
 			],
 			"settings": {
-				"foreground": "#1ce8bc",
+				"foreground": "#1ce8bc"
+			}
+		},
+		{
+			"name": "Comparison operators",
+			"scope": [
+				"keyword.operator.comparison.mindcode"
+			],
+			"settings": {
+				"foreground": "#1ce8bc"
+			}
+		},
+		{
+			"name": "Compound assignment operators",
+			"scope": [
+				"keyword.operator.assignment.compound.mindcode"
+			],
+			"settings": {
+				"foreground": "#d4d4d4"
+			}
+		},
+		{
+			"name": "Mlog keywords",
+			"scope": [
+				"keyword.other.mlog.mindcode"
+			],
+			"settings": {
+				"foreground": "#C586C0"
+			}
+		},
+		{
+			"name": "Color literals",
+			"scope": [
+				"constant.numeric.color.mindcode"
+			],
+			"settings": {
+				"foreground": "#b5cea8"
+			}
+		},
+		{
+			"name": "Formattable strings",
+			"scope": [
+				"string.quoted.double.formattable.mindcode"
+			],
+			"settings": {
+				"foreground": "#ce9178"
+			}
+		},
+		{
+			"name": "Punctuation definitions",
+			"scope": [
+				"punctuation.definition.mindcode"
+			],
+			"settings": {
+				"foreground": "#d4d4d4"
 			}
 		},
 		{
@@ -252,6 +311,6 @@
 		"newOperator":"#C586C0",
 		"stringLiteral":"#ce9178",
 		"customLiteral": "#DCDCAA",
-		"numberLiteral": "#b5cea8",
+		"numberLiteral": "#b5cea8"
 	}
 }

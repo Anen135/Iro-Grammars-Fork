@@ -54,13 +54,34 @@ __qualifiedName			\= (?:[_a-zA-Z][\w]*)\.(?:[a-zA-Z][\w]*)
 // @memory-cell
 __GameObject			\= (?:^|\s+)@(?:[a-z][a-z]*)(?:\-(?:[a-z][a-z]*))?\b
 
-__logicOps				\= !|(&&)|(\|\|)|(and)|(or)
-__compareOps			\= (!=)|(===)|(==)|(<=)|(>=)|<|>
-__arithmeticOps			\= \*|\+|\-|\\|(\+=)|(\-=)|(\*=)|(\\=)
-__assignementOps		\= =
+// Mlog keyword
+// :building
+__MlogKeyword			\= :\b(?:[a-zA-Z][\w]*)\b
+
+// Mindcode keywords
+__Keywords				\= \b(?:allocate|and|atomic|begin|break|cached|case|const|continue|debug|def|descending|do|else|elsif|elif|elseif|end|export|external|false|for|guarded|heap|if|in|inline|linked|loop|mlog|module|noinit|noinline|not|null|or|out|param|private|public|ref|remote|require|return|stack|then|true|var|void|volatile|when|while)\b
+
+// Storage / declaration keywords
+__StorageKeywords		\= \b(?:const|var|param|external|linked|volatile|noinit|ref|out|private|public|export|remote|inline|noinline|cached|guarded|atomic|module|require|debug|mlog)\b
+
+// Control flow keywords
+__ControlKeywords		\= \b(?:while|if|else|elsif|elif|elseif|case|when|for|do|then|begin|end|break|continue|return|loop|in|descending|not|and|or)\b
+
+// Literals
+__LogicOps				\= \x26\x26|\|\||\band\b|\bor\b|\bnot\b|!
+__CompareOps			\= ===|!==|==|!=|\x3C=|\x3E=|\x3C|\x3E
+__ArithmeticOps			\= \*\*|\*|\+|-|/|%|\x3C\x3C|\x3E\x3E|\x26|\||\^
+__CompoundAssignOps		\= \+=|-=|\*=|\/=|%=|\x3C\x3C=|\x3E\x3E=|\x26=|\|=|\^=
+__AssignementOps		\= =
 
 __methodDecl			\= \bdef\b
 
+// Literals
+__ColorLiteral			\= %\[[a-zA-Z][\w]*\]|%[0-9A-Fa-f]{6}(?:[0-9A-Fa-f]{2})?
+__HexLiteral			\= 0[xX][0-9A-Fa-f]+[Ll]?
+__BinaryLiteral			\= 0[bB][01]+[Ll]?
+__ScientificLiteral		\= (?:\+|-)?(?:\d+)(?:\.\d+)?[eE][+-]?\d+[LlFfDd]?
+__DecimalLiteral		\= (?:\+|-)?(?:\d+)(?:\.\d+)?[LlFfDd]?
 
 
 ################################################################
@@ -104,6 +125,14 @@ styles [] {
    color				 = red
    ace_scope			 = constant.numeric
    textmate_scope		 = constant.numeric
+   pygments_scope		 = Number
+}
+
+# color literals
+.constant_numeric_color : style {
+   color				 = red
+   ace_scope			 = constant.numeric.color
+   textmate_scope		 = constant.numeric.color
    pygments_scope		 = Number
 }
 
@@ -187,13 +216,22 @@ styles [] {
    pygments_scope		 = Operator
 }
 
-// https://www.sublimetext.com/docs/3/scope_naming.html
+# https://www.sublimetext.com/docs/3/scope_naming.html
 # keyword.operator.assignment
 .keyword_operator_assignment : style {
    color				   = #f20
    bold					 = true
    ace_scope			 = keyword.operator.assignment
    textmate_scope		 = keyword.operator.assignment
+   pygments_scope		 = Operator
+}
+
+# keyword.operator.assignment.compound
+.keyword_operator_assignment_compound : style {
+   color				   = #f20
+   bold					 = true
+   ace_scope			 = keyword.operator.assignment.compound
+   textmate_scope		 = keyword.operator.assignment.compound
    pygments_scope		 = Operator
 }
 
@@ -217,6 +255,15 @@ styles [] {
    pygments_scope		 = Operator
 }
 
+# keyword.operator.comparison
+.keyword_operator_comparison : style {
+   color				   = #099
+   bold					 = true
+   ace_scope			 = keyword.operator.comparison
+   textmate_scope		 = keyword.operator.comparison
+   pygments_scope		 = Operator
+}
+
 
 
 # other — other keywords.
@@ -225,6 +272,15 @@ styles [] {
    bold					 = true
    ace_scope			 = keyword.other
    textmate_scope		 = keyword.other
+   pygments_scope		 = Keyword.Pseudo
+}
+
+# mlog keywords
+.keyword_other_mlog : style {
+   color				 = violet_red
+   bold					 = true
+   ace_scope			 = keyword.other.mlog
+   textmate_scope		 = keyword.other.mlog
    pygments_scope		 = Keyword.Pseudo
 }
 
@@ -262,6 +318,14 @@ styles [] {
    pygments_scope		 = String.Double
 }
 
+# formattable — formattable strings: $"foo".
+.string_quoted_double_formattable : style {
+   color				 = light_blue
+   ace_scope			 = string.quoted.double.formattable
+   textmate_scope		 = string.quoted.double.formattable
+   pygments_scope		 = String.Double
+}
+
 # triple — triple quoted strings: """Python""".
 .string_quoted_triple : style {
    color				 = light_blue
@@ -290,8 +354,8 @@ styles [] {
 
 .globalVariable : style {
    color				 = light_yellow
-   ace_scope			 = Name.Variable.Global
-   textmate_scope		 = Name.Variable.Global
+   ace_scope			 = variable.global
+   textmate_scope		 = variable.global
    pygments_scope		 = Name.Variable.Global
 }
 
@@ -323,11 +387,11 @@ styles [] {
    pygments_scope		 = Punctuation
 }
 
-.parenthesis : style {
+.punctuation_definition : style {
    color				 = violet
-   ace_scope			 = keyword punctuation
-   textmate_scope		 = keyword punctuation
-   pygments_scope		 = Operator.Word
+   ace_scope			 = punctuation.definition
+   textmate_scope		 = punctuation.definition
+   pygments_scope		 = Punctuation
 }
 
 .whitespace : style {
@@ -368,11 +432,6 @@ grammar : context {
    : include "SingleLineComment" ;
    
    : include "File" ;
-   
-   : pattern {
-	  regex			 \= ([^\s])
-	  styles []		  = .invalid_illegal;
-   }
 }
 
 
@@ -390,8 +449,8 @@ File: context {
 // For Mindustry / mindcode
 AllocateSection: context {
 	: pattern {
-		regex			 \= (\ballocate\b)(\s*)(?:\b(stack in|heap in)\b)(\s*)($${__Variable})
-		styles []		  = .keyword_other, .whitespace, .keyword_other, .whitespace, .entity_name;
+		regex			 \= (\ballocate\b)(\s*)(?:\b(stack|heap)\b)(\s+)(\bin\b)(\s*)($${__Variable})
+		styles []		  = .keyword_other, .whitespace, .keyword_other, .whitespace, .keyword_other, .whitespace, .entity_name;
 	}
 }
 
@@ -409,11 +468,11 @@ Type: context {
 BracedTypeBody: context {
    : inline_push {
 	  regex			 \= (\{)
-	  styles []		  = .parenthesis;
-	  default_style	  = .parenthesis
+	  styles []		  = .punctuation_definition;
+	  default_style	  = .punctuation_definition
 	  : pop {
 		 regex		 \= (\})
-		 styles []	  = .parenthesis;
+		 styles []	  = .punctuation_definition;
 	  }
    }
 }
@@ -431,6 +490,10 @@ FieldOrVarDecl: context {
 	: include "MethodCall";
 	: include "Variable";
 
+	: pattern {
+		regex		  \= ($${__StorageKeywords})
+		styles []	   = .storage_type;
+	}
 	: pattern {
 		regex		  \= ($${__CONST}(?=\s*=))
 		styles []	   = .constant_var;
@@ -463,7 +526,7 @@ FieldOrVarDecl: context {
 MethodDecl: context {
 	// matches: ReturnType Func (
 	: pattern {
-		regex		\= ($${__methodDecl})(\s+)($${__FuncName}(?=\())
+		regex		\= ($${__methodDecl})(\s+)($${__FuncName}(?=\s*\())
 		styles []	 = .keyword_other, .whitespace, .entity_function;
 	}
 
@@ -476,7 +539,7 @@ MethodDecl: context {
 MethodCall: context {
 	// matches: ReturnType Func (
 	: pattern {
-		regex		\= ($${__FuncName}(?=\())
+		regex		\= ($${__FuncName}(?=\s*\())
 		styles []	 = .entity_function;
 	}
 
@@ -505,10 +568,10 @@ Expression: context {
 BracedExpression:  context {
    : inline_push {
 	  regex			 \= (\{)
-	  styles []		  = .parenthesis;
+	  styles []		  = .punctuation_definition;
 	  : pop {
 		 regex		 \= (\})
-		 styles []	  = .parenthesis;
+		 styles []	  = .punctuation_definition;
 	  }
 	  
 	  : include "Expression";
@@ -520,10 +583,10 @@ BracedExpression:  context {
 ParenthesizedExpression: context {
    : inline_push {
 	  regex			 \= (\()
-	  styles []		  = .parenthesis;
+	  styles []		  = .punctuation_definition;
 	  : pop {
 		 regex		 \= (\))
-		 styles []	  = .parenthesis;
+		 styles []	  = .punctuation_definition;
 	  }
 	  : include "Expression";
    }
@@ -534,10 +597,10 @@ ParenthesizedExpression: context {
 BracketizedExpression: context {
    : inline_push {
 	  regex			 \= (\[)
-	  styles []		  = .parenthesis;
+	  styles []		  = .punctuation_definition;
 	  : pop {
 		 regex		 \= (\])
-		 styles []	  = .parenthesis;
+		 styles []	  = .punctuation_definition;
 	  }
 	  : pattern {
 		 regex		 \= (\bit\b)
@@ -550,7 +613,7 @@ BracketizedExpression: context {
 
 ExpressionKeywords: context {
 	: pattern {
-		regex		  \= (\bwhile\b|\bif\b|\belse\b|\bcase\b|\bwhen\b|\bfor\b|\b\.\.\b|\b\.\.\.\b|\bend\b|\b==\b)
+		regex		  \= ($${__ControlKeywords})
 		styles []	   = .keyword_control ;
 	}
 	: pattern {
@@ -587,6 +650,12 @@ Variable: context {
 		regex		  \= ($${__GameObject})
 		styles []	   = .support_type;
 	}
+	// Mlog keyword
+	// :building
+	: pattern {
+		regex		  \= ($${__MlogKeyword})
+		styles []	   = .keyword_other_mlog;
+	}
 	// Variable
 	: pattern {
 		regex		  \= ($${__Variable})
@@ -602,8 +671,23 @@ Variable: context {
 
 Number: context {
    : pattern { 
-	  // regex		  \= ((?:0x[\dABCDEFabcdef]+[Ll]?)|\d+(\.?\d)*[LlFfdD]?)
-	  regex		  \= (?:0x[\dABCDEFabcdef]+[Ll]?)|(?:(?:\+|-)?(?:\d+)(?:(?:\.)\d+)?[LlFfdD]?)
+	  regex		  \= ($${__ColorLiteral})
+	  styles []	   = .constant_numeric_color ;
+   }
+   : pattern { 
+	  regex		  \= ($${__HexLiteral})
+	  styles []	   = .constant_numeric ;
+   }
+   : pattern { 
+	  regex		  \= ($${__BinaryLiteral})
+	  styles []	   = .constant_numeric ;
+   }
+   : pattern { 
+	  regex		  \= ($${__ScientificLiteral})
+	  styles []	   = .constant_numeric ;
+   }
+   : pattern { 
+	  regex		  \= ($${__DecimalLiteral})
 	  styles []	   = .constant_numeric ;
    }
 }
@@ -613,10 +697,10 @@ Number: context {
 Parameters: context {
 	: inline_push {
 		regex			 \= (\()
-		styles []		  = .parenthesis;
+		styles []		  = .punctuation_definition;
 		: pop {
 			regex		 \= (\))
-			styles []	  = .parenthesis;
+			styles []	  = .punctuation_definition;
 		}
 		
 		: include "Number";
@@ -636,7 +720,7 @@ Parameters: context {
 
 Punctuation: context {
    : pattern { 
-	  regex		  \= (,|\,|:|;|\.\.\.|\|)
+	  regex		  \= (,|\,|:|;|\.\.\.|\.\.|\|)
 	  styles []	   = .punctuation ;
    }
 }
@@ -644,19 +728,23 @@ Punctuation: context {
 
 Operators: context {
    : pattern { 
-	  regex		  \= ($${__compareOps})
+	  regex		  \= ($${__CompareOps})
+	  styles []	   = .keyword_operator_comparison ;
+   }
+   : pattern { 
+	  regex		  \= ($${__LogicOps})
 	  styles []	   = .keyword_operator_logical ;
    }
    : pattern { 
-	  regex		  \= ($${__logicOps})
-	  styles []	   = .keyword_operator_logical ;
+	  regex		  \= ($${__CompoundAssignOps})
+	  styles []	   = .keyword_operator_assignment_compound ;
    }
    : pattern { 
-	  regex		  \= ($${__arithmeticOps})
+	  regex		  \= ($${__ArithmeticOps})
 	  styles []	   = .keyword_operator_arithmetic ;
    }
    : pattern { 
-	  regex		  \= ($${__assignementOps})
+	  regex		  \= ($${__AssignementOps})
 	  styles []	   = .keyword_operator_assignment ;
    }
 }
@@ -702,20 +790,29 @@ MultiLineComment : context {
 String : context {
    description		 = quoted string
    : inline_push {
-	  regex			 \= (\")
+	  regex			 \= (\$\x22)
+	  styles []		  = .string_quoted_double_formattable;
+	  default_style	  = .string_quoted_double_formattable
+	  : pop {
+		 regex		 \= (\x22)
+		 styles []	  = .string_quoted_double_formattable;
+	  }
+   }
+   : inline_push {
+	  regex			 \= (\x22)
 	  styles []		  = .string_quoted_double;
 	  default_style	  = .string_quoted_double
 	  : pop {
-		 regex		 \= (\")
+		 regex		 \= (\x22)
 		 styles []	  = .string_quoted_double;
 	  }
    }
    : inline_push {
-	  regex			 \= (\')
+	  regex			 \= (\x27)
 	  styles []		  = .string_quoted_single;
 	  default_style	  = .string_quoted_single
 	  : pop {
-		 regex		 \= (\')
+		 regex		 \= (\x27)
 		 styles []	  = .string_quoted_single;
 	  }
    }
