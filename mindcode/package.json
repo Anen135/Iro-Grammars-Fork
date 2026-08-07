@@ -4,6 +4,9 @@
   "description": "Mindcode language support for the Mindustry game — syntax highlighting, themes, and language configuration.",
   "version": "0.1.0",
   "publisher": "jig-opensource",
+  "scripts": {
+    "build": "node ../build-vsix.js"
+  },
   "author": {
     "name": "JIG Open Source",
     "url": "https://gitlab.com/jig-opensource"

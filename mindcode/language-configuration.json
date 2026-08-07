@@ -10,6 +10,7 @@
         ["when", "end"],
         ["for", "end"],
         ["begin", "end"],
+        ["loop", "end"],
         ["{", "}"],
         ["[", "]"],
         ["(", ")"]
@@ -42,5 +43,5 @@
             "beforeText": "^\\s*(end)\\b.*$",
             "action": { "indent": "outdent" }
         }
-    ]
+    ],
 }
