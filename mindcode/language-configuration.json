@@ -4,13 +4,13 @@
         "blockComment": [ "/*", "*/" ]
     },
     "brackets": [
-        ["def", "end"],
-        ["if", "end"],
-        ["while", "end"],
-        ["when", "end"],
-        ["for", "end"],
-        ["begin", "end"],
-        ["loop", "end"],
+        ["def", "end;"],
+        ["if", "end;"],
+        ["while", "end;"],
+        ["when", "end;"],
+        ["for", "end;"],
+        ["begin", "end;"],
+        ["loop", "end;"],
         ["{", "}"],
         ["[", "]"],
         ["(", ")"]

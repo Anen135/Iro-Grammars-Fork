@@ -709,30 +709,44 @@
     <dict>
       <key>patterns</key>
       <array>
+       <dict>
+    <key>begin</key>
+    <string>(\$\x22)</string>
+
+    <key>beginCaptures</key>
+    <dict>
+        <key>1</key>
         <dict>
-          <key>begin</key>
-          <string>(\$\x22)</string>
-          <key>beginCaptures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>string.quoted.double.formattable.mindcode</string>
-            </dict>
-          </dict>
-          <key>contentName</key>
-          <string>string.quoted.double.formattable.mindcode</string>
-          <key>end</key>
-          <string>(\x22)</string>
-          <key>endCaptures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>string.quoted.double.formattable.mindcode</string>
-            </dict>
-          </dict>
+            <key>name</key>
+            <string>string.quoted.double.formattable.mindcode</string>
         </dict>
+    </dict>
+
+    <key>contentName</key>
+    <string>string.quoted.double.formattable.mindcode</string>
+
+    <key>patterns</key>
+    <array>
+        <dict>
+            <key>match</key>
+            <string>(\$[_a-zA-Z][\w]*)</string>
+            <key>name</key>
+            <string>variable.global.mindcode</string>
+        </dict>
+    </array>
+
+    <key>end</key>
+    <string>(\x22)</string>
+
+    <key>endCaptures</key>
+    <dict>
+        <key>1</key>
+        <dict>
+            <key>name</key>
+            <string>string.quoted.double.formattable.mindcode</string>
+        </dict>
+    </dict>
+</dict>
         <dict>
           <key>begin</key>
           <string>(\x22)</string>

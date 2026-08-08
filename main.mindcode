@@ -1,0 +1,42 @@
+#set syntax = strict;
+
+// These are declarations and need to be present in the global scope:
+allocate heap in cell1;
+const pi = 3.1415926535898;
+
+// Enhanced comment is also allowed in global scope
+param UNIT_TYPE = @flare;       /// Type of unit to use:
+
+// A global, external variable
+external total = 0;
+var message = findMessage();   // Initialization through a function call is possible
+
+// All code must be enclosed in a code block or in a function
+begin
+    var firstUnit = ubind(UNIT_TYPE);
+    if firstUnit == null then
+        println($"No unit of type $UNIT_TYPE found.");
+    else
+        for var unit = ubind(UNIT_TYPE); unit != firstUnit; unit = ubind(UNIT_TYPE) do
+            if firstUnit.@dead then
+                println("A unit was killed!");
+                printflush(message);
+                end();
+            end;
+            total++;
+        end;
+
+        println($"$total unit(s) of type $UNIT_TYPE found.");
+    end;
+
+    printflush(message);
+end;
+
+def findMessage()
+    for var i in 0 ... @links do
+        var block = getlink(i);
+        if block.@type == @message then return block; end;
+    end;
+
+    return null;
+end;
